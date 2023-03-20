@@ -21,7 +21,9 @@ cd filament-page-with-sidebar-project
 composer install
 ```
 
-Copy .env.example to .env
+```bash
+copy .env.example .env
+```
 
 Create database and prepare database connection
 
