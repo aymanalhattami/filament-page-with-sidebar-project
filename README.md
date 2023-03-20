@@ -49,3 +49,9 @@ php artisan serve
 email: admin@admin.com
 password: password
 ```
+
+Go to
+
+http://127.0.0.1:8008/admin/users
+
+and then click 'view' button of any user
