@@ -94,14 +94,14 @@ class UserResource extends Resource implements HasShieldPermissions
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
                         return request()->route()->action['as'] == 'filament.resources.users.dashboard';
-                    })->isHiddenWhen(auth()->user()->cannot('dashboard_user')),
+                    })->isHiddenWhen(false),
                 PageNavigationItem::make(__('View User'))
                     ->url(function () use ($record) {
                         return static::getUrl('view', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
                         return request()->route()->action['as'] == 'filament.resources.users.view';
-                    })->isHiddenWhen(auth()->user()->cannot('view_user')),
+                    })->isHiddenWhen(false),
                 PageNavigationItem::make(__('Edit User'))
                     ->url(function () use ($record) {
                         return static::getUrl('edit', ['record' => $record->id]);
@@ -116,7 +116,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
                         return request()->route()->action['as'] == 'filament.resources.users.manage';
-                    })->isHiddenWhen(auth()->user()->cannot('manage_user')),
+                    })->isHiddenWhen(false),
                 PageNavigationItem::make(__('Change Password'))
                     ->url(function () use ($record) {
                         return static::getUrl('password.change', ['record' => $record->id]);
@@ -124,7 +124,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->isActiveWhen(function () {
                         return request()->route()->action['as'] == 'filament.resources.users.password.change';
                     })
-                    ->isHiddenWhen(auth()->user()->cannot('change_password_user')),
+                    ->isHiddenWhen(false),
                 PageNavigationItem::make(__('User Activities'))
                     ->url(function () use ($record) {
                         return static::getUrl('activities.user', ['record' => $record->id]);
@@ -132,7 +132,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->isActiveWhen(function () {
                         return request()->route()->action['as'] == 'filament.resources.users.activities.user';
                     })
-                    ->isHiddenWhen(auth()->user()->cannot('user_activities_user'))
+                    ->isHiddenWhen(false)
                     ->badge(Activity::query()->where([['causer_type', '=', User::class], ['causer_id', '=', $record->id]])->count()),
                 PageNavigationItem::make(__('Record Activities'))
                     ->url(function () use ($record) {
@@ -142,7 +142,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         return request()->route()->action['as'] == 'filament.resources.users.activities';
                     })
                     ->badge(Activity::query()->where([['subject_type', '=', User::class], ['subject_id', '=', $record->id]])->count())
-                    ->isHiddenWhen(auth()->user()->cannot('activities_user'))
+                    ->isHiddenWhen(false)
                     ,
             ]);
     }
