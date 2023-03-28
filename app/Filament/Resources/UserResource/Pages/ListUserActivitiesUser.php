@@ -25,21 +25,12 @@ use Filament\Tables\Concerns\InteractsWithTable;
 class ListUserActivitiesUser extends Page implements HasTable
 {
     use InteractsWithTable;
-    use HasPageShield;
 
     protected static string $resource = UserResource::class;
 
     protected static string $view = 'filament.resources.user-resource.pages.list-user-activities-user';
 
-    public function mount($record)
-    {
-        $this->record = User::find($record);
-    }
-
-    protected static function getPermissionName(): string
-    {
-        return 'user_activities_user';
-    }
+    public User $record;
 
     protected function getShieldRedirectPath(): string
     {

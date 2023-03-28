@@ -109,7 +109,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->isActiveWhen(function () {
                         return request()->route()->action['as'] == 'filament.resources.users.edit';
                     })
-                    ->isHiddenWhen(auth()->user()->cannot('update_user')),
+                    ->isHiddenWhen(false),
                 PageNavigationItem::make(__('Manage User'))
                     ->url(function () use ($record) {
                         return static::getUrl('manage', ['record' => $record->id]);

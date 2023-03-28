@@ -24,7 +24,6 @@ use Illuminate\Support\Str;
 class ManageUser extends Page
 {
     use HasFormActions;
-    use HasPageShield;
 
     protected static string $resource = UserResource::class;
 
@@ -33,15 +32,7 @@ class ManageUser extends Page
     public $status;
     public $reason;
 
-    public function mount($record)
-    {
-        $this->record = User::find($record);
-    }
-
-    protected static function getPermissionName(): string
-    {
-        return 'manage_user';
-    }
+    public User $record;
 
     protected function getShieldRedirectPath(): string
     {

@@ -19,25 +19,16 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 class ChangePasswordUser extends Page
 {
     use HasFormActions;
-    use HasPageShield;
 
     protected static string $resource = UserResource::class;
 
     protected static string $view = 'filament.resources.user-resource.pages.change-password-user';
 
+    public User $record;
+
     public $password;
     public $password_confirmation;
     public $reason;
-
-    public function mount($record)
-    {
-        $this->record = User::find($record);
-    }
-
-    protected static function getPermissionName(): string
-    {
-        return 'change_password_user';
-    }
 
     protected function getShieldRedirectPath(): string
     {
