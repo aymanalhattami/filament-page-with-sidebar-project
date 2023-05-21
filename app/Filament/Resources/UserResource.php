@@ -93,21 +93,21 @@ class UserResource extends Resource implements HasShieldPermissions
                         return static::getUrl('dashboard', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.dashboard';
+                        return request()->routeIs(static::getRouteBaseName() . '.dashboard');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make(__('View User'))
                     ->url(function () use ($record) {
                         return static::getUrl('view', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.view';
+                        return request()->routeIs(static::getRouteBaseName() . '.view');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make(__('Edit User'))
                     ->url(function () use ($record) {
                         return static::getUrl('edit', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.edit';
+                        return request()->routeIs(static::getRouteBaseName() . '.edit');
                     })
                     ->isHiddenWhen(false),
                 PageNavigationItem::make(__('Manage User'))
@@ -115,14 +115,14 @@ class UserResource extends Resource implements HasShieldPermissions
                         return static::getUrl('manage', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.manage';
+                        return request()->routeIs(static::getRouteBaseName() . '.manage');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make(__('Change Password'))
                     ->url(function () use ($record) {
                         return static::getUrl('password.change', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.password.change';
+                        return request()->routeIs(static::getRouteBaseName() . '.password.change');
                     })
                     ->isHiddenWhen(false),
                 PageNavigationItem::make(__('User Activities'))
@@ -130,7 +130,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         return static::getUrl('activities.user', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.activities.user';
+                        return request()->routeIs(static::getRouteBaseName() . '.activities.user');
                     })
                     ->isHiddenWhen(false)
                     ->badge(Activity::query()->where([['causer_type', '=', User::class], ['causer_id', '=', $record->id]])->count()),
@@ -139,7 +139,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         return static::getUrl('activities', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
-                        return request()->route()->action['as'] == 'filament.resources.users.activities';
+                        return request()->routeIs(static::getRouteBaseName() . '.activities');
                     })
                     ->badge(Activity::query()->where([['subject_type', '=', User::class], ['subject_id', '=', $record->id]])->count())
                     ->isHiddenWhen(false)
