@@ -36,9 +36,4 @@ class ListUsers extends ListRecords
 
         return $query;
     }
-
-    // protected function getTableFiltersFormWidth(): string
-    // {
-    //     return '4xl';
-    // }
 }

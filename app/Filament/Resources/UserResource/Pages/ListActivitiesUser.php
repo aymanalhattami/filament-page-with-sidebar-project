@@ -32,24 +32,19 @@ class ListActivitiesUser extends Page implements HasTable
 
     public User $record;
 
-    protected function getShieldRedirectPath(): string
-    {
-        return redirect()->back()->getTargetUrl();
-    }
-
     public function hasTableColumnSearches(): bool
     {
         return true;
     }
 
-    protected function getTitle(): string
-    {
-        return '';
-    }
-
     public function getBreadcrumb(): ?string
     {
-        return trans("Mange User");
+        return __('List Record Activities');
+    }
+
+    protected function getTitle(): string
+    {
+        return __('List Record Activities');
     }
 
     protected function getTableQuery(): Builder
@@ -70,7 +65,6 @@ class ListActivitiesUser extends Page implements HasTable
             ->description(function (Activity $record) {
                 return $record->subject_id;
             }),
-            // TextColumn::make('subject_id'),
             TextColumn::make('created_at'),
         ];
     }
@@ -140,16 +134,7 @@ class ListActivitiesUser extends Page implements HasTable
                     TextInput::make('description'),
                     TextInput::make('subject_type'),
                     TextInput::make('subject_id'),
-                    TextInput::make('causer_type')
-                    // ->view('components.alerts.warning')
-                    ,
-                    // Card::make()
-                    //     ->statePath('currency')
-                    //     ->schema([
-                    //         TextInput::make('code'),
-                    //         TextInput::make('name'),
-                    //         TextInput::make('symbol'),
-                    //     ]),
+                    TextInput::make('causer_type'),
                     TextInput::make('created_at'),
                     TextInput::make('updated_at'),
                 ];

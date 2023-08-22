@@ -11,14 +11,4 @@ class ViewUser extends ViewRecord
     protected static string $resource = UserResource::class;
 
     protected static string $view = 'filament.resources.user-resource.pages.view-user';
-
-    protected function getActions(): array
-    {
-        return [];
-    }
-
-    protected function getTitle(): string
-    {
-        return '';
-    }
 }

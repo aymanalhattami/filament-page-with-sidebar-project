@@ -18,19 +18,9 @@ class DashboardUser extends Page
 
     public User $record;
 
-    protected function getShieldRedirectPath(): string
-    {
-        return redirect()->back()->getTargetUrl();
-    }
-
-    protected function getTitle(): string
-    {
-        return '';
-    }
-
     public function getBreadcrumb(): ?string
     {
-        return trans("User Dashboard");
+        return __("User Dashboard");
     }
 
     protected function getHeaderWidgets(): array

@@ -11,9 +11,4 @@ class EditUser extends EditRecord
     protected static string $resource = UserResource::class;
 
     protected static string $view = 'filament.resources.user-resource.pages.edit-user';
-
-    protected function getActions(): array
-    {
-        return [];
-    }
 }

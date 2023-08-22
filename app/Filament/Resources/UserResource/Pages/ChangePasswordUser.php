@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\HasFormActions;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Forms\Components\Card;
 
 class ChangePasswordUser extends Page
 {
@@ -64,15 +65,10 @@ class ChangePasswordUser extends Page
         return trans("Change Password");
     }
 
-    protected function getTitle(): string
-    {
-        return '';
-    }
-
     protected function getFormSchema(): array
     {
         return [
-            Section::make(__('Change User Password'))
+            Card::make()
                 ->schema([
                     TextInput::make('password')->label(__('Password'))
                         ->password()

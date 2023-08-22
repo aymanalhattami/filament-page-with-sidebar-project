@@ -38,33 +38,18 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Resources\UserResource\Pages\ListRecordActivity;
 use App\Filament\Resources\UserResource\Pages\ListRecordActivityUser;
 use App\Filament\Resources\UserResource\Pages\ListUserActivitiesUser;
+use Filament\Forms\Components\Card;
 use Illuminate\Database\Eloquent\Model;
 
-class UserResource extends Resource implements HasShieldPermissions
+class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    public static function getPermissionPrefixes(): array
-    {
-        return [
-            'view',
-            'view_any',
-            'create',
-            'update',
-            'delete',
-            'manage',
-            'change_password',
-            'user_activities',
-            'activities',
-            'dashboard',
-        ];
-    }
-
     protected static function getNavigationGroup(): ?string
     {
-        return trans('Users & Roles');
+        return __('Users & Roles');
     }
 
     public static function getModelLabel(): string
@@ -88,21 +73,24 @@ class UserResource extends Resource implements HasShieldPermissions
             ->setTitle($record->name)
             ->setDescription($record->created_at)
             ->setNavigationItems([
-                PageNavigationItem::make(__('User Dashboard'))
+                PageNavigationItem::make('User Dashboard')
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('dashboard', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.dashboard');
                     })->isHiddenWhen(false),
-                PageNavigationItem::make(__('View User'))
+                PageNavigationItem::make('View User')
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('view', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.view');
                     })->isHiddenWhen(false),
-                PageNavigationItem::make(__('Edit User'))
+                PageNavigationItem::make('Edit User')
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('edit', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
@@ -110,14 +98,16 @@ class UserResource extends Resource implements HasShieldPermissions
                         return request()->routeIs(static::getRouteBaseName() . '.edit');
                     })
                     ->isHiddenWhen(false),
-                PageNavigationItem::make(__('Manage User'))
+                PageNavigationItem::make('Manage User')
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('manage', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.manage');
                     })->isHiddenWhen(false),
-                PageNavigationItem::make(__('Change Password'))
+                PageNavigationItem::make("Change Password")
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('password.change', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
@@ -125,7 +115,8 @@ class UserResource extends Resource implements HasShieldPermissions
                         return request()->routeIs(static::getRouteBaseName() . '.password.change');
                     })
                     ->isHiddenWhen(false),
-                PageNavigationItem::make(__('User Activities'))
+                PageNavigationItem::make('User Activities')
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('activities.user', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
@@ -134,7 +125,8 @@ class UserResource extends Resource implements HasShieldPermissions
                     })
                     ->isHiddenWhen(false)
                     ->badge(Activity::query()->where([['causer_type', '=', User::class], ['causer_id', '=', $record->id]])->count()),
-                PageNavigationItem::make(__('Record Activities'))
+                PageNavigationItem::make('Record Activities')
+                    ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('activities', ['record' => $record->id]);
                     })->icon('heroicon-o-collection')
@@ -142,8 +134,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         return request()->routeIs(static::getRouteBaseName() . '.activities');
                     })
                     ->badge(Activity::query()->where([['subject_type', '=', User::class], ['subject_id', '=', $record->id]])->count())
-                    ->isHiddenWhen(false)
-                    ,
+                    ->isHiddenWhen(false),
             ]);
     }
 
@@ -151,40 +142,57 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                Section::make(__('User Information'))
+                Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')->label(__('Name'))
+                        Forms\Components\TextInput::make('name')
+                            ->label('Name')
+                            ->translateLabel()
                             ->required()
                             ->maxLength(191),
-                        Forms\Components\TextInput::make('email')->label(__('Email'))
+                        Forms\Components\TextInput::make('email')
+                            ->label('Email')
+                            ->translateLabel()
                             ->email()
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(191),
-                        Forms\Components\DateTimePicker::make('email_verified_at')->label(__('Email verified at'))
+                        Forms\Components\DateTimePicker::make('email_verified_at')
+                            ->label('Email verified at')
+                            ->translateLabel()
                             ->hiddenOn(['edit', 'create']),
                         Forms\Components\TextInput::make('password')
+                            ->translateLabel()
                             ->password()
                             ->required()
                             ->maxLength(191)
                             ->minLength(6)
                             ->hiddenOn(['edit', 'view']),
-                        Select::make('language')->label(__('Language'))
+                        Select::make('language')
+                            ->label('Language')
+                            ->translateLabel()
                             ->options(LanguageEnum::toArray())
                             ->searchable()
                             ->required(),
-                        Forms\Components\DateTimePicker::make('created_at')->label(__('Created at'))
+                        Forms\Components\DateTimePicker::make('created_at')
+                            ->label('Created at')
+                            ->translateLabel()
                             ->hiddenOn(['create', 'edit']),
-                        Forms\Components\DateTimePicker::make('updated_at')->label(__('Updated at'))
+                        Forms\Components\DateTimePicker::make('updated_at')
+                            ->label('Updated at')
+                            ->translateLabel()
                             ->hiddenOn(['create', 'edit']),
-                        Select::make('roles')->label(__('Roles'))
+                        Select::make('roles')
+                            ->label('Roles')
+                            ->translateLabel()
                             ->options(Role::pluck('name', 'id'))
                             ->multiple()
                             ->searchable()
                             ->relationship('roles', 'name')
                             ->preload()
                             ->columnSpan(2),
-                        SpatieMediaLibraryFileUpload::make('avatar')->label(__('Avatar'))
+                        SpatieMediaLibraryFileUpload::make('avatar')
+                            ->label('Avatar')
+                            ->translateLabel()
                             ->columnSpan(2),
                     ])->columns(2),
             ]);
@@ -194,23 +202,32 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('email')
+                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('roles')
+                    ->translateLabel()
                     ->formatStateUsing(fn (string $state): string => optional(json_decode($state))[0]?->name ?? ''),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime(),
             ])
             ->filters(
                 [
                     SelectFilter::make('status')
+                        ->translateLabel()
                         ->searchable()
                         ->options(StatusEnum::forUserToArray()),
-
-                    SelectFilter::make('roles')->searchable()->relationship('roles', 'name'),
+                    SelectFilter::make('roles')
+                        ->translateLabel()
+                        ->searchable()
+                        ->relationship('roles', 'name'),
 
                     Filter::make('name')
+                        ->translateLabel()
                         ->form([
                             Forms\Components\TextInput::make('name'),
                         ])->query(function (Builder $query, array $data): Builder {
@@ -218,6 +235,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         }),
 
                     Filter::make('email')
+                        ->translateLabel()
                         ->form([
                             Forms\Components\TextInput::make('email'),
                         ])->query(function (Builder $query, array $data): Builder {
@@ -225,9 +243,12 @@ class UserResource extends Resource implements HasShieldPermissions
                         }),
 
                     Filter::make('created_at')
+                        ->translateLabel()
                         ->form([
-                            Forms\Components\DatePicker::make('created_from'),
-                            Forms\Components\DatePicker::make('created_until')->default(now()),
+                            Forms\Components\DatePicker::make('created_from')
+                                ->translateLabel(),
+                            Forms\Components\DatePicker::make('created_until')
+                                ->default(now())->translateLabel(),
                         ])->query(function (Builder $query, array $data): Builder {
                             return $query
                                 ->when(
@@ -243,14 +264,14 @@ class UserResource extends Resource implements HasShieldPermissions
                 ],
             )
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                // Tables\Actions\Action::make('manage')->url(function (User $record) {
-                //     return static::getNavigationUrl() . '/' . $record->id . '/manage';
-                // }),
+                Tables\Actions\Action::make('manage')->url(function (User $record) {
+                    return static::getNavigationUrl() . '/' . $record->id . '/manage';
+                }),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -265,7 +286,6 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            // 'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
             'view' => Pages\ViewUser::route('/{record}/view'),
             'manage' => Pages\ManageUser::route('/{record}/manage'),
