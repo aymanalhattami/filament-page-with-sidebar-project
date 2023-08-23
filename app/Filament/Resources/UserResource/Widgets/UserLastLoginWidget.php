@@ -12,7 +12,8 @@ class UserLastLoginWidget extends Widget
 
     public ?Model $record = null;
 
-    protected int | string | array $columnSpan = 2;
+    protected int|string|array $columnSpan = 2;
+
     public $activity;
 
     public function mount()

@@ -2,21 +2,17 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use Hash;
+use App\Filament\Resources\UserResource;
 use App\Models\User;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\Page;
+use Hash;
 use Illuminate\Support\Facades\DB;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Textarea;
-use App\Filament\Resources\UserResource;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
-use Filament\Pages\Concerns\HasFormActions;
-use BezhanSalleh\FilamentShield\Traits\HasPageShield;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Concerns\InteractsWithForms;
 
 class ChangePasswordUser extends Page
 {
@@ -29,7 +25,9 @@ class ChangePasswordUser extends Page
     public User $record;
 
     public $password;
+
     public $password_confirmation;
+
     public $reason;
 
     protected function getShieldRedirectPath(): string
@@ -63,7 +61,7 @@ class ChangePasswordUser extends Page
 
     public function getBreadcrumb(): ?string
     {
-        return trans("Change Password");
+        return trans('Change Password');
     }
 
     protected function getFormSchema(): array
@@ -81,8 +79,8 @@ class ChangePasswordUser extends Page
                         ->required(),
                     Textarea::make('reason')->label(__('Reason'))
                         ->required()
-                        ->minLength(5)
-                ])
+                        ->minLength(5),
+                ]),
         ];
     }
 

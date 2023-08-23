@@ -2,45 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use Str;
-use Closure;
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Tables\Actions\ViewAction;
-use Filament\Resources\Resource;
-use Spatie\Permission\Models\Role;
-use App\CoreLogic\Enums\StatusEnum;
-use Filament\Forms\Components\Card;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\Layout;
 use App\CoreLogic\Enums\LanguageEnum;
-use Filament\Forms\Components\Select;
+use App\CoreLogic\Enums\StatusEnum;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Pages\DashboardUser;
+use App\Filament\Resources\UserResource\Pages\ListActivitiesUser;
+use App\Filament\Resources\UserResource\Pages\ListUserActivitiesUser;
+use App\Models\User;
+use AymanAlhattami\FilamentPageWithSidebar\FilamentPageSidebar;
+use AymanAlhattami\FilamentPageWithSidebar\PageNavigationItem;
+use Filament\Forms;
 use Filament\Forms\Components\Section;
-use Filament\Navigation\NavigationItem;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Filters\TernaryFilter;
-use App\Filament\Resources\UserResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UserResource\RelationManagers;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Resources\UserResource\Pages\DashboardUser;
-use App\Filament\Resources\UserResource\Pages\EditUser;
-use AymanAlhattami\FilamentPageWithSidebar\PageNavigationItem;
-use App\Filament\Resources\UserResource\Pages\ListActivityUser;
-use App\Filament\Resources\UserResource\Pages\ListUserActivity;
-use AymanAlhattami\FilamentPageWithSidebar\FilamentPageSidebar;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use App\Filament\Resources\UserResource\Pages\ListActivitiesUser;
-use App\Filament\Resources\UserResource\Pages\ListRecordActivity;
-use App\Filament\Resources\UserResource\Pages\ListRecordActivityUser;
-use App\Filament\Resources\UserResource\Pages\ListUserActivitiesUser;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -88,14 +72,14 @@ class UserResource extends Resource
                         return static::getUrl('view', ['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.view');
+                        return request()->routeIs(static::getRouteBaseName().'.view');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make('Edit User')
                     ->translateLabel()
                     ->url(static::getUrl('edit', ['record' => $record->id]))
                     ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.edit');
+                        return request()->routeIs(static::getRouteBaseName().'.edit');
                     })
                     ->isHiddenWhen(false),
                 PageNavigationItem::make('Manage User')
@@ -104,15 +88,15 @@ class UserResource extends Resource
                         return static::getUrl('manage', ['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.manage');
+                        return request()->routeIs(static::getRouteBaseName().'.manage');
                     })->isHiddenWhen(false),
-                PageNavigationItem::make("Change Password")
+                PageNavigationItem::make('Change Password')
                     ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('password.change', ['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.password.change');
+                        return request()->routeIs(static::getRouteBaseName().'.password.change');
                     })
                     ->isHiddenWhen(false),
                 PageNavigationItem::make('User Activities')
@@ -121,7 +105,7 @@ class UserResource extends Resource
                         return static::getUrl('activities.user', ['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.activities.user');
+                        return request()->routeIs(static::getRouteBaseName().'.activities.user');
                     })
                     ->isHiddenWhen(false)
                     ->badge(Activity::query()->where([['causer_type', '=', User::class], ['causer_id', '=', $record->id]])->count()),
@@ -131,7 +115,7 @@ class UserResource extends Resource
                         return static::getUrl('activities', ['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.activities');
+                        return request()->routeIs(static::getRouteBaseName().'.activities');
                     })
                     ->badge(Activity::query()->where([['subject_type', '=', User::class], ['subject_id', '=', $record->id]])->count())
                     ->isHiddenWhen(false),
@@ -267,7 +251,7 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('manage')->url(function (User $record) {
-                    return static::getNavigationUrl() . '/' . $record->id . '/manage';
+                    return static::getNavigationUrl().'/'.$record->id.'/manage';
                 }),
             ])
             ->bulkActions([

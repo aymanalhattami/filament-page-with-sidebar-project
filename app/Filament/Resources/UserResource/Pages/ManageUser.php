@@ -2,26 +2,19 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Filament\Actions\Action;
-use Filament\Resources\Pages\Page;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\CoreLogic\Enums\StatusEnum;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Textarea;
 use App\Filament\Resources\UserResource;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
-use Filament\Pages\Concerns\HasFormActions;
-use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Concerns\InteractsWithForms;
-use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use App\Filament\Resources\UserResource\Widgets\UserClosedWidget;
 use App\Filament\Resources\UserResource\Widgets\UserStatusWidget;
+use App\Models\User;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\DB;
 
 class ManageUser extends Page
 {
@@ -32,6 +25,7 @@ class ManageUser extends Page
     protected static string $view = 'filament.resources.user-resource.pages.manage-user';
 
     public $status;
+
     public $reason;
 
     public User $record;
@@ -43,7 +37,7 @@ class ManageUser extends Page
 
     public function getBreadcrumb(): ?string
     {
-        return __("Manage User");
+        return __('Manage User');
     }
 
     protected function getFormActions(): array
@@ -97,8 +91,8 @@ class ManageUser extends Page
                         ->translateLabel()
                         ->label('Reason')
                         ->required()
-                        ->minLength(5)
-                ])
+                        ->minLength(5),
+                ]),
         ];
     }
 
@@ -118,8 +112,8 @@ class ManageUser extends Page
                 ->withProperties([
                     'staus' => [
                         'old_value' => $oldStatus,
-                        'new_value' => $this->status
-                    ]
+                        'new_value' => $this->status,
+                    ],
                 ])
                 ->log($this->reason);
         });
@@ -132,7 +126,6 @@ class ManageUser extends Page
             ->success()
             ->send();
     }
-
 
     protected function getHeaderWidgets(): array
     {
@@ -148,12 +141,12 @@ class ManageUser extends Page
         ];
     }
 
-    public function getHeaderWidgetsColumns(): int | array
+    public function getHeaderWidgetsColumns(): int|array
     {
         return 1;
     }
 
-    public function getFooterWidgetsColumns(): int | array
+    public function getFooterWidgetsColumns(): int|array
     {
         return 1;
     }

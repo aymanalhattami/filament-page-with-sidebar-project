@@ -10,5 +10,4 @@ class UserClosedWidget extends Widget
     protected static string $view = 'filament.resources.user-resource.widgets.user-closed-widget';
 
     public ?Model $record = null;
-
 }

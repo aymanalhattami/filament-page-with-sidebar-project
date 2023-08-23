@@ -58,7 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                FilamentLanguageSwitchPlugin::make()
+                FilamentLanguageSwitchPlugin::make(),
             ]);
     }
 }
