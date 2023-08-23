@@ -110,7 +110,7 @@ class ManageUser extends Page
                 ->performedOn($this->record)
                 ->event('manage')
                 ->withProperties([
-                    'staus' => [
+                    'status' => [
                         'old_value' => $oldStatus,
                         'new_value' => $this->status,
                     ],

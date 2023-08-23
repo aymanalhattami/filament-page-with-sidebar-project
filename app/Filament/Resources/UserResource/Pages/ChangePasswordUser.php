@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Resources\UserResource;
 use App\Models\User;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Notifications\Notification;
-use Filament\Pages\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\Page;
-use Hash;
 use Illuminate\Support\Facades\DB;
+use Filament\Forms\Components\Card;
+use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
+use App\Filament\Resources\UserResource;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Forms\Concerns\InteractsWithForms;
 
 class ChangePasswordUser extends Page
 {
@@ -29,11 +30,6 @@ class ChangePasswordUser extends Page
     public $password_confirmation;
 
     public $reason;
-
-    protected function getShieldRedirectPath(): string
-    {
-        return redirect()->back()->getTargetUrl();
-    }
 
     protected function getFormActions(): array
     {
@@ -67,7 +63,7 @@ class ChangePasswordUser extends Page
     protected function getFormSchema(): array
     {
         return [
-            Card::make()
+            Section::make()
                 ->schema([
                     TextInput::make('password')->label(__('Password'))
                         ->password()
@@ -106,7 +102,7 @@ class ChangePasswordUser extends Page
         unset($this->reason);
 
         Notification::make()
-            ->title('Password Changeed Successfully')
+            ->title('Password Changed Successfully')
             ->success()
             ->send();
     }
