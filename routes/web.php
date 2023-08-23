@@ -19,7 +19,6 @@ Route::get('/', function () {
 
 Route::redirect('/', 'admin');
 
-
 if ($loginPage = config('filament.auth.pages.login')) {
     Route::get('/login', $loginPage)->name('login');
 }
