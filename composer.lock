@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcc5bc5b8cfa974aaa403e68a03e1496",
+    "content-hash": "b66777567b8ffa8339118598639a259a",
     "packages": [
         {
             "name": "aymanalhattami/filament-page-with-sidebar",
