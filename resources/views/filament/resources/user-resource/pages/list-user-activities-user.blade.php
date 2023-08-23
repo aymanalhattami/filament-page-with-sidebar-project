@@ -1,5 +1,5 @@
 <x-filament-page-with-sidebar::page>
-    <x-filament::page :widget-data="['record' => $record]">
+    <x-filament-panels::page>
         {{ $this->table }}
-    </x-filament::page>
+    </x-filament-panels::page>
 </x-filament-page-with-sidebar::page>

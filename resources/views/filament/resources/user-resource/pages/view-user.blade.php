@@ -1,31 +1,37 @@
 <x-filament-page-with-sidebar::page>
-    <x-filament::page :widget-data="['record' => $record]" :class="\Illuminate\Support\Arr::toCssClasses([
-        'filament-resources-view-record-page',
-        'filament-resources-' . str_replace('/', '-', $this->getResource()::getSlug()),
-        'filament-resources-record-' . $record->getKey(),
-    ])">
+    <x-filament-panels::page @class([
+        'fi-resource-view-record-page',
+        'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug()),
+        'fi-resource-record-' . $record->getKey(),
+    ])>
         @php
             $relationManagers = $this->getRelationManagers();
         @endphp
 
-        @if (!$this->hasCombinedRelationManagerTabsWithForm() || !count($relationManagers))
-            {{ $this->form }}
+        @if (!$this->hasCombinedRelationManagerTabsWithContent() || !count($relationManagers))
+            @if ($this->hasInfolist())
+                {{ $this->infolist }}
+            @else
+                <div wire:key="{{ $this->getId() }}.forms.{{ $this->getFormStatePath() }}">
+                    {{ $this->form }}
+                </div>
+            @endif
         @endif
 
         @if (count($relationManagers))
-            @if (!$this->hasCombinedRelationManagerTabsWithForm())
-                <x-filament::hr />
-            @endif
-
-            <x-filament::resources.relation-managers :active-manager="$activeRelationManager" :form-tab-label="$this->getFormTabLabel()" :managers="$relationManagers"
-                :owner-record="$record" :page-class="static::class">
-                @if ($this->hasCombinedRelationManagerTabsWithForm())
-                    <x-slot name="form">
-                        {{ $this->form }}
+            <x-filament-panels::resources.relation-managers :active-locale="isset($activeLocale) ? $activeLocale : null" :active-manager="$activeRelationManager" :content-tab-label="$this->getContentTabLabel()"
+                :managers="$relationManagers" :owner-record="$record" :page-class="static::class">
+                @if ($this->hasCombinedRelationManagerTabsWithContent())
+                    <x-slot name="content">
+                        @if ($this->hasInfolist())
+                            {{ $this->infolist }}
+                        @else
+                            {{ $this->form }}
+                        @endif
                     </x-slot>
                 @endif
-            </x-filament::resources.relation-managers>
+            </x-filament-panels::resources.relation-managers>
         @endif
-    </x-filament::page>
+    </x-filament-panels::page>
 
 </x-filament-page-with-sidebar::page>

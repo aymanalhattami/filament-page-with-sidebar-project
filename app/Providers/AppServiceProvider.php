@@ -22,9 +22,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-        Filament::serving(function () {
-            // Using Vite
-            Filament::registerViteTheme('resources/css/filament.css');
-        });
     }
 }

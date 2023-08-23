@@ -5,14 +5,14 @@
                 <div class="min-w-0 flex-1">
                     <!-- Profile -->
                     <div class="flex items-center">
-                        @if ($record->hasMedia())
+                        @if ($record?->hasMedia())
                             <img class="hidden h-16 w-16 rounded-full sm:block"
-                                src="{{ $record->getFirstMediaUrl() }}"
+                                src="{{ $record?->getFirstMediaUrl() }}"
                                 alt="">
                         @else
                             <div
                                 class="bg-gray-300 content-center flex h-16 items-center justify-center rounded-full w-16">
-                                <span class='text-3xl text-bold'>{{ substr($record->name, 0, 1) }}</span>
+                                <span class='text-3xl text-bold'>{{ substr($record?->name, 0, 1) }}</span>
                             </div>
                         @endif
                         <div>
@@ -22,7 +22,7 @@
                                     alt="">
                                 <h1
                                     class="ltr:ml-3 rtl:mr-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                                    {{ $record->name }}</h1>
+                                    {{ $record?->name }}</h1>
                             </div>
                             <dl class="mt-6 flex flex-col ltr:sm:ml-3 rtl:mr-3 sm:mt-1 sm:flex-row sm:flex-wrap">
                                 <dt class="sr-only">Company</dt>
@@ -34,7 +34,7 @@
                                             d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                                     </svg>
 
-                                    <span>{{ $record->email }}</span>
+                                    <span>{{ $record?->email }}</span>
                                 </dd>
                                 <dt class="sr-only">Account status</dt>
                                 <dd
@@ -48,7 +48,7 @@
                                     {{-- <x-badges text="{{ $record->status }}" /> --}}
                                     <div class="text-xs">
                                         <span>{{ trans('Created at') }} : </span>
-                                        <span>{{ $record->created_at }}</span>
+                                        <span>{{ $record?->created_at }}</span>
                                     </div>
                                 </dd>
                             </dl>
@@ -56,7 +56,8 @@
                     </div>
                 </div>
                 <div class="mt-6 flex ltr:space-x-3 rtl:space-x-reverse md:mt-0 ltr:md:ml-4 rtl:mr-4">
-                    <a href="{{ route('filament.resources.users.edit', $record) }}"
+                    {{-- <a href="{{ route('filament.resources.users.edit', $record) }}" --}}
+                    <a href=""
                         class="text-blue">{{ trans('Edit') }}</a>
                 </div>
             </div>

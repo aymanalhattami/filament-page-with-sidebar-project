@@ -7,12 +7,13 @@ use Closure;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Tables\Actions\ViewAction;
 use Filament\Resources\Resource;
 use Spatie\Permission\Models\Role;
 use App\CoreLogic\Enums\StatusEnum;
+use Filament\Forms\Components\Card;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Layout;
 use App\CoreLogic\Enums\LanguageEnum;
@@ -20,6 +21,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Navigation\NavigationItem;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,25 +31,24 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\UserResource\Pages\DashboardUser;
-use App\Filament\Resources\UserResource\Pages\ListActivitiesUser;
+use App\Filament\Resources\UserResource\Pages\EditUser;
 use AymanAlhattami\FilamentPageWithSidebar\PageNavigationItem;
 use App\Filament\Resources\UserResource\Pages\ListActivityUser;
 use App\Filament\Resources\UserResource\Pages\ListUserActivity;
 use AymanAlhattami\FilamentPageWithSidebar\FilamentPageSidebar;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use App\Filament\Resources\UserResource\Pages\ListActivitiesUser;
 use App\Filament\Resources\UserResource\Pages\ListRecordActivity;
 use App\Filament\Resources\UserResource\Pages\ListRecordActivityUser;
 use App\Filament\Resources\UserResource\Pages\ListUserActivitiesUser;
-use Filament\Forms\Components\Card;
-use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('Users & Roles');
     }
@@ -62,7 +63,7 @@ class UserResource extends Resource
         return __('Users');
     }
 
-    protected static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
@@ -73,27 +74,26 @@ class UserResource extends Resource
             ->setTitle($record->name)
             ->setDescription($record->created_at)
             ->setNavigationItems([
-                PageNavigationItem::make('User Dashboard')
-                    ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('dashboard', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
-                    ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.dashboard');
-                    })->isHiddenWhen(false),
+                // PageNavigationItem::make('User Dashboard')
+                //     ->translateLabel()
+                //     ->url(function () use ($record) {
+                //         return static::getUrl('dashboard', ['record' => $record->id]);
+                //     })->icon('heroicon-o-rectangle-stack')
+                //     ->isActiveWhen(function () {
+                //         return request()->routeIs(static::getRouteBaseName() . '.dashboard');
+                //     })->isHiddenWhen(false),
                 PageNavigationItem::make('View User')
                     ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('view', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
+                    })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.view');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make('Edit User')
                     ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('edit', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
+                    ->url(static::getUrl('edit', ['record' => $record->id]))
+                    ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.edit');
                     })
@@ -102,7 +102,7 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('manage', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
+                    })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.manage');
                     })->isHiddenWhen(false),
@@ -110,7 +110,7 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('password.change', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
+                    })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.password.change');
                     })
@@ -119,7 +119,7 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('activities.user', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
+                    })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.activities.user');
                     })
@@ -129,7 +129,7 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->url(function () use ($record) {
                         return static::getUrl('activities', ['record' => $record->id]);
-                    })->icon('heroicon-o-collection')
+                    })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.activities');
                     })
@@ -142,7 +142,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Name')

@@ -32,12 +32,7 @@ class ListUserActivitiesUser extends Page implements HasTable
 
     public User $record;
 
-    public function hasTableColumnSearches(): bool
-    {
-        return true;
-    }
-
-    protected function getTitle(): string
+    public function getTitle(): string
     {
         return __('List User Activities');
     }
@@ -103,25 +98,6 @@ class ListUserActivitiesUser extends Page implements HasTable
                         );
                 })
         ];
-    }
-
-    public function isTableSearchable(): bool
-    {
-        return true;
-    }
-
-    protected function applySearchToTableQuery(Builder $query): Builder
-    {
-        if (filled($searchQuery = $this->getTableSearchQuery())) {
-            $query->where('event', $searchQuery);
-        }
-
-        return $query;
-    }
-
-    protected function getTableFiltersFormColumns(): int
-    {
-        return 2;
     }
 
     protected function getTableActions(): array

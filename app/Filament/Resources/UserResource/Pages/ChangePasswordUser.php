@@ -16,10 +16,11 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\HasFormActions;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Concerns\InteractsWithForms;
 
 class ChangePasswordUser extends Page
 {
-    use HasFormActions;
+    use InteractsWithForms;
 
     protected static string $resource = UserResource::class;
 

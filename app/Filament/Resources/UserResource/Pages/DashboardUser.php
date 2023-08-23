@@ -23,12 +23,14 @@ class DashboardUser extends Page
         return __("User Dashboard");
     }
 
-    protected function getHeaderWidgets(): array
+    public function getHeaderWidgets(): array
     {
         return [
-            UserProfileWidget::class,
-            UserStatusWidget::class,
-            UserLastLoginWidget::class
+            UserProfileWidget::make([
+                'record' => $this->record
+            ]),
+            // UserStatusWidget::class,
+            // UserLastLoginWidget::class
         ];
     }
 }

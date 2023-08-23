@@ -1,6 +1,10 @@
 
 # Filament Page With Sidebar Demo Project
 
+> **Note:**
+> For Filament 2.x use [filament-v2 branch](https://github.com/aymanalhattami/filament-page-with-sidebar-project/tree/filament-v2)
+
+
 Demo project for [Filament Page With Sidebar](https://github.com/aymanalhattami/filament-page-with-sidebar) package
 
 ## Screenshots
@@ -33,14 +37,6 @@ php artisan key:generate
 
 ```bash
 php artisan migrate --seed
-```
-
-```bash
-npm install
-```
-
-```bash
-npm run dev
 ```
 
 ```bash

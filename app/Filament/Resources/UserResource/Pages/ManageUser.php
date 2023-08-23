@@ -3,11 +3,13 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Models\User;
-use Filament\Pages\Actions\Action;
+use Illuminate\Support\Str;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\CoreLogic\Enums\StatusEnum;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
@@ -16,15 +18,14 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\HasFormActions;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Concerns\InteractsWithForms;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use App\Filament\Resources\UserResource\Widgets\UserClosedWidget;
 use App\Filament\Resources\UserResource\Widgets\UserStatusWidget;
-use Filament\Forms\Components\Card;
-use Illuminate\Support\Str;
 
 class ManageUser extends Page
 {
-    use HasFormActions;
+    use InteractsWithForms;
 
     protected static string $resource = UserResource::class;
 
@@ -76,7 +77,7 @@ class ManageUser extends Page
     protected function getFormSchema(): array
     {
         return [
-            Card::make()
+            Section::make()
                 ->schema([
                     Select::make('status')->label('Status')
                         ->translateLabel()
@@ -147,12 +148,12 @@ class ManageUser extends Page
         ];
     }
 
-    protected function getHeaderWidgetsColumns(): int | array
+    public function getHeaderWidgetsColumns(): int | array
     {
         return 1;
     }
 
-    protected function getFooterWidgetsColumns(): int | array
+    public function getFooterWidgetsColumns(): int | array
     {
         return 1;
     }
