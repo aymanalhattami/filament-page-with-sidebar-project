@@ -19,6 +19,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use App\Filament\Resources\UserResource\Widgets\UserClosedWidget;
 use App\Filament\Resources\UserResource\Widgets\UserStatusWidget;
+use Filament\Forms\Components\Card;
 use Illuminate\Support\Str;
 
 class ManageUser extends Page
@@ -72,17 +73,13 @@ class ManageUser extends Page
             ->color('secondary');
     }
 
-    protected function getTitle(): string
-    {
-        return '';
-    }
-
     protected function getFormSchema(): array
     {
         return [
-            Section::make(__('Manage User'))
+            Card::make()
                 ->schema([
-                    Select::make('status')->label(__('Status'))
+                    Select::make('status')->label('Status')
+                        ->translateLabel()
                         ->options(function () {
                             $filteredArray = [];
                             foreach (StatusEnum::forUserToArray() as $key => $value) {
@@ -95,7 +92,9 @@ class ManageUser extends Page
                         })
                         ->searchable()
                         ->required(),
-                    Textarea::make('reason')->label(__('Reason'))
+                    Textarea::make('reason')
+                        ->translateLabel()
+                        ->label('Reason')
                         ->required()
                         ->minLength(5)
                 ])
@@ -109,7 +108,7 @@ class ManageUser extends Page
         DB::transaction(function () {
             $oldStatus = $this->record->status;
 
-            $this->record->updateStatus($this->status);
+            $this->record->status = $this->status;
 
             activity()
                 ->causedBy(auth()->user())
