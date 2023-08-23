@@ -58,64 +58,49 @@ class UserResource extends Resource
             ->setTitle($record->name)
             ->setDescription($record->created_at)
             ->setNavigationItems([
-                // PageNavigationItem::make('User Dashboard')
-                //     ->translateLabel()
-                //     ->url(function () use ($record) {
-                //         return static::getUrl('dashboard', ['record' => $record->id]);
-                //     })->icon('heroicon-o-rectangle-stack')
-                //     ->isActiveWhen(function () {
-                //         return request()->routeIs(static::getRouteBaseName() . '.dashboard');
-                //     })->isHiddenWhen(false),
                 PageNavigationItem::make('View User')
                     ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('view', ['record' => $record->id]);
-                    })->icon('heroicon-o-rectangle-stack')
+                    ->url(static::getUrl('view', ['record' => $record->id]))->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName().'.view');
+                        return request()->routeIs(static::getRouteBaseName() . '.view');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make('Edit User')
                     ->translateLabel()
                     ->url(static::getUrl('edit', ['record' => $record->id]))
                     ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName().'.edit');
+                        return request()->routeIs(static::getRouteBaseName() . '.edit');
                     })
                     ->isHiddenWhen(false),
                 PageNavigationItem::make('Manage User')
                     ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('manage', ['record' => $record->id]);
-                    })->icon('heroicon-o-rectangle-stack')
+                    ->url(static::getUrl('manage', ['record' => $record->id]))
+                    ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName().'.manage');
+                        return request()->routeIs(static::getRouteBaseName() . '.manage');
                     })->isHiddenWhen(false),
                 PageNavigationItem::make('Change Password')
                     ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('password.change', ['record' => $record->id]);
-                    })->icon('heroicon-o-rectangle-stack')
+                    ->url(static::getUrl('password.change', ['record' => $record->id]))
+                    ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName().'.password.change');
+                        return request()->routeIs(static::getRouteBaseName() . '.password.change');
                     })
                     ->isHiddenWhen(false),
                 PageNavigationItem::make('User Activities')
                     ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('activities.user', ['record' => $record->id]);
-                    })->icon('heroicon-o-rectangle-stack')
+                    ->url(static::getUrl('activities.user', ['record' => $record->id]))->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName().'.activities.user');
+                        return request()->routeIs(static::getRouteBaseName() . '.activities.user');
                     })
                     ->isHiddenWhen(false)
                     ->badge(Activity::query()->where([['causer_type', '=', User::class], ['causer_id', '=', $record->id]])->count()),
                 PageNavigationItem::make('Record Activities')
                     ->translateLabel()
-                    ->url(function () use ($record) {
-                        return static::getUrl('activities', ['record' => $record->id]);
-                    })->icon('heroicon-o-rectangle-stack')
+                    ->url(static::getUrl('activities', ['record' => $record->id]))
+                    ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName().'.activities');
+                        return request()->routeIs(static::getRouteBaseName() . '.activities');
                     })
                     ->badge(Activity::query()->where([['subject_type', '=', User::class], ['subject_id', '=', $record->id]])->count())
                     ->isHiddenWhen(false),
@@ -251,19 +236,12 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('manage')->url(function (User $record) {
-                    return static::getNavigationUrl().'/'.$record->id.'/manage';
+                    return static::getNavigationUrl() . '/' . $record->id . '/manage';
                 }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
@@ -276,7 +254,6 @@ class UserResource extends Resource
             'password.change' => Pages\ChangePasswordUser::route('/{record}/password/change'),
             'activities' => ListActivitiesUser::route('/{record}/activities'),
             'activities.user' => ListUserActivitiesUser::route('/{record}/activities/user'),
-            'dashboard' => DashboardUser::route('/{record}/dashboard'),
         ];
     }
 }

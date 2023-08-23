@@ -21,9 +21,7 @@ class ListUserActivitiesUser extends Page implements HasTable
     use InteractsWithTable;
 
     protected static string $resource = UserResource::class;
-
     protected static string $view = 'filament.resources.user-resource.pages.list-user-activities-user';
-
     public User $record;
 
     public function getTitle(): string
@@ -47,14 +45,25 @@ class ListUserActivitiesUser extends Page implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('id'),
-            TextColumn::make('log_name'),
-            TextColumn::make('event'),
-            TextColumn::make('subject_type')->label('Subject')
+            TextColumn::make('id')
+                ->translateLabel()
+                ->toggleable()
+                ->searchable(),
+            TextColumn::make('log_name')
+                ->translateLabel()
+                ->toggleable()
+                ->searchable(),
+            TextColumn::make('event')
+                ->translateLabel()
+                ->toggleable()
+                ->searchable(),
+            TextColumn::make('subject_type')
+                ->label('Subject')
+                ->toggleable()
+                ->translateLabel()
                 ->description(function (Activity $record) {
                     return $record->subject_id;
                 }),
-            // TextColumn::make('subject_id'),
             TextColumn::make('created_at'),
         ];
     }

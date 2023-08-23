@@ -8,6 +8,7 @@ use App\Filament\Resources\UserResource\Widgets\UserClosedWidget;
 use App\Filament\Resources\UserResource\Widgets\UserStatusWidget;
 use App\Models\User;
 use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -18,54 +19,17 @@ use Illuminate\Support\Facades\DB;
 
 class ManageUser extends Page
 {
-    use InteractsWithForms;
+    use InteractsWithForms, InteractsWithActions;
 
     protected static string $resource = UserResource::class;
-
     protected static string $view = 'filament.resources.user-resource.pages.manage-user';
-
     public $status;
-
     public $reason;
-
     public User $record;
-
-    protected function getShieldRedirectPath(): string
-    {
-        return redirect()->back()->getTargetUrl();
-    }
 
     public function getBreadcrumb(): ?string
     {
         return __('Manage User');
-    }
-
-    protected function getFormActions(): array
-    {
-        if ($this->record->status != StatusEnum::Closed->value) {
-            return [
-                $this->getSaveFormAction(),
-                $this->getCancelFormAction(),
-            ];
-        }
-
-        return [];
-    }
-
-    protected function getSaveFormAction(): Action
-    {
-        return Action::make('save')
-            ->label(__('filament::resources/pages/edit-record.form.actions.save.label'))
-            ->submit('save')
-            ->keyBindings(['mod+s']);
-    }
-
-    protected function getCancelFormAction(): Action
-    {
-        return Action::make('cancel')
-            ->label(__('filament::resources/pages/edit-record.form.actions.cancel.label'))
-            ->url($this->previousUrl ?? static::getResource()::getUrl())
-            ->color('secondary');
     }
 
     protected function getFormSchema(): array
@@ -104,6 +68,7 @@ class ManageUser extends Page
             $oldStatus = $this->record->status;
 
             $this->record->status = $this->status;
+            $this->record->save();
 
             activity()
                 ->causedBy(auth()->user())
@@ -127,27 +92,9 @@ class ManageUser extends Page
             ->send();
     }
 
-    protected function getHeaderWidgets(): array
+    public function saveAction(): Action
     {
-        return [
-            // UserStatusWidget::class,
-        ];
-    }
-
-    protected function getFooterWidgets(): array
-    {
-        return [
-            // UserClosedWidget::class,
-        ];
-    }
-
-    public function getHeaderWidgetsColumns(): int|array
-    {
-        return 1;
-    }
-
-    public function getFooterWidgetsColumns(): int|array
-    {
-        return 1;
+        return Action::make('save')
+            ->action(fn () => $this->save());
     }
 }

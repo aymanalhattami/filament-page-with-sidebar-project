@@ -21,9 +21,7 @@ class ListActivitiesUser extends Page implements HasTable
     use InteractsWithTable;
 
     protected static string $resource = UserResource::class;
-
     protected static string $view = 'filament.resources.user-resource.pages.list-activities-user';
-
     public User $record;
 
     public function getBreadcrumb(): ?string
@@ -47,10 +45,22 @@ class ListActivitiesUser extends Page implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('id'),
-            TextColumn::make('log_name'),
-            TextColumn::make('event'),
-            TextColumn::make('subject_type')->label('Subject')
+            TextColumn::make('id')
+                ->searchable()
+                ->toggleable()
+                ->translateLabel(),
+            TextColumn::make('log_name')
+                ->searchable()
+                ->toggleable()
+                ->translateLabel(),
+            TextColumn::make('event')
+                ->searchable()
+                ->toggleable()
+                ->translateLabel(),
+            TextColumn::make('subject_type')
+                ->label('Subject')
+                ->toggleable()
+                ->translateLabel()
                 ->description(function (Activity $record) {
                     return $record->subject_id;
                 }),

@@ -20,40 +20,11 @@ class ChangePasswordUser extends Page
     use InteractsWithForms;
 
     protected static string $resource = UserResource::class;
-
     protected static string $view = 'filament.resources.user-resource.pages.change-password-user';
-
     public User $record;
-
     public $password;
-
     public $password_confirmation;
-
     public $reason;
-
-    protected function getFormActions(): array
-    {
-        return [
-            $this->getSaveFormAction(),
-            $this->getCancelFormAction(),
-        ];
-    }
-
-    protected function getSaveFormAction(): Action
-    {
-        return Action::make('save')
-            ->label(__('filament::resources/pages/edit-record.form.actions.save.label'))
-            ->submit('save')
-            ->keyBindings(['mod+s']);
-    }
-
-    protected function getCancelFormAction(): Action
-    {
-        return Action::make('cancel')
-            ->label(__('filament::resources/pages/edit-record.form.actions.cancel.label'))
-            ->url($this->previousUrl ?? static::getResource()::getUrl())
-            ->color('secondary');
-    }
 
     public function getBreadcrumb(): ?string
     {
@@ -65,15 +36,20 @@ class ChangePasswordUser extends Page
         return [
             Section::make()
                 ->schema([
-                    TextInput::make('password')->label(__('Password'))
+                    TextInput::make('password')
+                        ->translateLabel()
                         ->password()
                         ->required()
                         ->minLength(6)
                         ->confirmed(),
-                    TextInput::make('password_confirmation')->label(__('Password confirmation'))
+                    TextInput::make('password_confirmation')
+                        ->label('Password confirmation')
+                        ->translateLabel()
                         ->password()
                         ->required(),
-                    Textarea::make('reason')->label(__('Reason'))
+                    Textarea::make('reason')
+                        ->label('Reason')
+                        ->translateLabel()
                         ->required()
                         ->minLength(5),
                 ]),
@@ -105,5 +81,11 @@ class ChangePasswordUser extends Page
             ->title('Password Changed Successfully')
             ->success()
             ->send();
+    }
+
+    public function saveAction(): Action
+    {
+        return Action::make('save')
+            ->action(fn () => $this->save());
     }
 }

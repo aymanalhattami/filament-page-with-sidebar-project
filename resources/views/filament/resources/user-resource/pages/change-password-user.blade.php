@@ -4,9 +4,9 @@
             <form wire:submit="save">
                 {{ $this->form }}
                 
-                <button class="mt-4" type="submit">
-                    Submit
-                </button>
+                <div class="mt-4">
+                    {{ $this->saveAction }}
+                </div>
             </form>
         </div>
     </x-filament-panels::page>
