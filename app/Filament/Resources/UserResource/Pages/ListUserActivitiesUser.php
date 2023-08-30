@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\User;
+use AymanAlhattami\FilamentPageWithSidebar\Traits\HasPageSidebar;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\Page;
@@ -18,7 +19,7 @@ use Spatie\Activitylog\Models\Activity;
 
 class ListUserActivitiesUser extends Page implements HasTable
 {
-    use InteractsWithTable;
+    use InteractsWithTable, HasPageSidebar;
 
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.list-user-activities-user';
@@ -34,7 +35,7 @@ class ListUserActivitiesUser extends Page implements HasTable
         return __('List Record Activities');
     }
 
-    protected function getTableQuery(): Builder
+    public function getTableQuery(): Builder
     {
         return Activity::query()->where([
             ['causer_type', '=', User::class],
@@ -42,7 +43,7 @@ class ListUserActivitiesUser extends Page implements HasTable
         ]);
     }
 
-    protected function getTableColumns(): array
+    public function getTableColumns(): array
     {
         return [
             TextColumn::make('id')
@@ -68,7 +69,7 @@ class ListUserActivitiesUser extends Page implements HasTable
         ];
     }
 
-    protected function getTableFilters(): array
+    public function getTableFilters(): array
     {
         return [
             SelectFilter::make('log_name')
@@ -103,7 +104,7 @@ class ListUserActivitiesUser extends Page implements HasTable
         ];
     }
 
-    protected function getTableActions(): array
+    public function getTableActions(): array
     {
         return [
             ViewAction::make()->form(function () {
@@ -122,7 +123,7 @@ class ListUserActivitiesUser extends Page implements HasTable
         ];
     }
 
-    protected function getFormSchema(): array
+    public function getFormSchema(): array
     {
         return [
             TextInput::make('id'),

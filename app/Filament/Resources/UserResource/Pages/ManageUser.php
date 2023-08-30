@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource;
 use App\Filament\Resources\UserResource\Widgets\UserClosedWidget;
 use App\Filament\Resources\UserResource\Widgets\UserStatusWidget;
 use App\Models\User;
+use AymanAlhattami\FilamentPageWithSidebar\Traits\HasPageSidebar;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Forms\Components\Section;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 
 class ManageUser extends Page
 {
-    use InteractsWithForms, InteractsWithActions;
+    use InteractsWithForms, InteractsWithActions, HasPageSidebar;
 
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.manage-user';

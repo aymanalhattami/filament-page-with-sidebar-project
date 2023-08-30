@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\User;
+use AymanAlhattami\FilamentPageWithSidebar\Traits\HasPageSidebar;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\Page;
@@ -18,7 +19,7 @@ use Spatie\Activitylog\Models\Activity;
 
 class ListActivitiesUser extends Page implements HasTable
 {
-    use InteractsWithTable;
+    use InteractsWithTable, HasPageSidebar;
 
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.list-activities-user';

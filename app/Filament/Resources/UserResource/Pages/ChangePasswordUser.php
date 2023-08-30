@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use App\Filament\Resources\UserResource;
+use AymanAlhattami\FilamentPageWithSidebar\Traits\HasPageSidebar;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class ChangePasswordUser extends Page
 {
-    use InteractsWithForms;
+    use InteractsWithForms, HasPageSidebar;
 
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.change-password-user';
