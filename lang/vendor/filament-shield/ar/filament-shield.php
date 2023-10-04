@@ -31,7 +31,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'nav.group' => 'المستخدمين والصلاحيات',
+    'nav.group' => 'Resources',
     'nav.role.label' => 'الصلاحيات',
     'nav.role.icon' => 'heroicon-o-shield-check',
     'resource.label.role' => 'صلاحية',
