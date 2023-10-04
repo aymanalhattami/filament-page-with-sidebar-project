@@ -63,7 +63,11 @@ class UserResource extends Resource
                     ->url(static::getUrl('view', ['record' => $record->id]))->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.view');
-                    })->isHiddenWhen(false),
+                    })
+                    ->visible(true)
+                    ->group('User')
+                    // ->sort(2)
+                    ,
                 PageNavigationItem::make('Edit User')
                     ->translateLabel()
                     ->url(static::getUrl('edit', ['record' => $record->id]))
@@ -71,14 +75,19 @@ class UserResource extends Resource
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.edit');
                     })
-                    ->isHiddenWhen(false),
+                    ->visible(true)
+                    ->group('User')
+                    // ->sort(1)
+                    ,
                 PageNavigationItem::make('Manage User')
                     ->translateLabel()
                     ->url(static::getUrl('manage', ['record' => $record->id]))
                     ->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.manage');
-                    })->isHiddenWhen(false),
+                    })->visible(true)
+                    // ->group('User 2')
+                    ,
                 PageNavigationItem::make('Change Password')
                     ->translateLabel()
                     ->url(static::getUrl('password.change', ['record' => $record->id]))
@@ -86,14 +95,14 @@ class UserResource extends Resource
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.password.change');
                     })
-                    ->isHiddenWhen(false),
+                    ->visible(true),
                 PageNavigationItem::make('User Activities')
                     ->translateLabel()
                     ->url(static::getUrl('activities.user', ['record' => $record->id]))->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
                         return request()->routeIs(static::getRouteBaseName() . '.activities.user');
                     })
-                    ->isHiddenWhen(false)
+                    ->visible(true)
                     ->badge(Activity::query()->where([['causer_type', '=', User::class], ['causer_id', '=', $record->id]])->count()),
                 PageNavigationItem::make('Record Activities')
                     ->translateLabel()
@@ -103,7 +112,9 @@ class UserResource extends Resource
                         return request()->routeIs(static::getRouteBaseName() . '.activities');
                     })
                     ->badge(Activity::query()->where([['subject_type', '=', User::class], ['subject_id', '=', $record->id]])->count())
-                    ->isHiddenWhen(false),
+                    ->visible(function(){
+                        return true;
+                    }),
             ]);
     }
 
