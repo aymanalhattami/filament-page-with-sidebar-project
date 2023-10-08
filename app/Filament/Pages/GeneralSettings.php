@@ -28,7 +28,8 @@ class GeneralSettings extends Page
                     ->isActiveWhen(function () {
                         return request()->routeIs(GeneralSettings::getRouteName());
                     })
-                    ->visible(true),
+                    ->visible(true)
+                    ->group('Settings'),
                 PageNavigationItem::make('Admin Panel Settings')
                     ->translateLabel()
                     ->url(AdminPanelSettings::getUrl())
@@ -36,7 +37,8 @@ class GeneralSettings extends Page
                     ->isActiveWhen(function () {
                         return request()->routeIs(AdminPanelSettings::getRouteName());
                     })
-                    ->visible(true),
+                    ->visible(true)
+                    ->group('Settings'),
                 PageNavigationItem::make('Web Settings')
                     ->translateLabel()
                     ->url(WebsiteSettings::getUrl())
